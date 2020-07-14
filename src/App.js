@@ -1,57 +1,27 @@
 import React from 'react';
-import axios from "axios";
-import Movie from './Movie';
+import { HashRouter, Route } from "react-router-dom";
+import Home from "./routes/Home"
+import About from "./routes/About";
+import Detail from "./routes/Detail";
+import Navigation from "./components/Navigation";
 import "./App.css";
 
-class App extends React.Component {
-  state = {
-    isLoading: true,
-    movies: []
-  };
+function App() {
+  return (
+    <HashRouter>
+      <Navigation />
+      <Route path="/" exact={true} component={Home} />
+      <Route path="/about" component={About} />
+      <Route path="/movie/:id" component={Detail} />
+    </HashRouter>
+    /*
+      React Router Dom
+      - https://justmakeyourself.tistory.com/entry/intro-react-router-v4
 
-  getMovies = async () => {
-    const {
-      data: {
-        data : { movies }
-      }
-    } = await axios.get("https://yts-proxy.now.sh/list_movies.json");
-    this.setState({ movies, isLoading: false });
-  }
-
-  componentDidMount() {
-    this.getMovies();
-  }
-
-  render() {
-    const { isLoading, movies } = this.state;
-
-    return (
-      <section className="container">
-        {isLoading 
-        ? ( <div className="loader">
-          <span className="loader__text">Loading...</span>
-        </div> )
-        : (
-            <div className="movies">
-              {
-                movies.map(movie => (
-                  <Movie 
-                    id={movie.id} 
-                    key={movie.id} 
-                    year={movie.year} 
-                    title={movie.title} 
-                    summary={movie.summary} 
-                    poster={movie.medium_cover_image} 
-                    genres={movie.genres}
-                  />
-                ))
-              }
-            </div>   
-          )
-          }
-      </section>
-    )
-  }
+      BrowserRouter vs HashRouter
+      - https://medium.com/@_diana_lee/react-react-router-%EC%A0%81%EC%9A%A9%ED%95%9C-react-%EC%95%B1%EC%9D%84-github-pages%EB%A1%9C-%EB%B0%B0%ED%8F%AC%ED%95%98%EB%8A%94-%EB%B2%95-5f6119c6a5d9
+    */
+  );
 }
 
 export default App;
